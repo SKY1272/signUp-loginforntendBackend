@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <form id="signForm">
+    <input type="'text" id="name" placeholder="pls enter your name"/>
+    <input type="text" id="email" placeholder="pls enter your email"/>
+    <input type="text" id="password" placeholder="pls enter your password"/>
+    <button type="submit">SignUp</button>
+  </form>
+  <p id="message"></p>
+  <script>
+    const form=document.getElementById('signForm');
+    form.addEventListener('submit',async(e)=>{
+      e.preventDefault();
+      const name=document.getElementById('name').value;
+      const email=document.getElementById('email').value;
+      const password=document.getElementById('password').value;
+      try {
+        const response = await fetch('/signUp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, password })
+        });
+
+        const data = await response.json(); // only if response is JSON
+
+        document.getElementById('message').innerText = data.message;
+
+      } catch (error) {
+        console.error('❌ Error:', error);
+        document.getElementById('message').innerText = 'Signup failed!';
+      }
+    })
+  </script>
+</body>
+</html>
