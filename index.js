@@ -17,7 +17,7 @@ app.post('/signUp',async(req,res)=>{
   const existingUser=users.find(user=>user.email===email);
   if(existingUser){
     console.log("User already exists:", email);
-    res.status(500).json({message:'user already exist'});
+    return res.status(500).json({message:'user already exist'});
 
   }
   const hashPassword=await bcrypt.hash(password,10);
@@ -33,7 +33,7 @@ app.post('/login',async(req,res)=>{
   }
   const isMatch=await bcrypt.compare(password,user.password);
   if(!isMatch){
-    req.status(500).json({message:'user creditional not macthed'})
+    res.status(500).json({message:'user creditional not macthed'})
   }
   const jwtToken=jwt.sign({id:user.id,email:user.email},SECRET_KEY,{expiresIn:'1h'});
   res.json({message:'login successful',jwtToken})
